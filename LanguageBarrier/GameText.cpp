@@ -413,18 +413,16 @@ void gameTextInit() {
       slurpFile(ss.str(), fontBuffers);
       gameLoadTexture(OUTLINE_TEXTURE_ID, (void *)(fontBuffers[0]->c_str()),
                       fontBuffers[0]->size());
+      float outlineRowHeightScaled = OUTLINE_CELL_HEIGHT * COORDS_MULTIPLIER;
+      SPLIT_FONT_OUTLINE_A_HEIGHT = floorf(4096 / outlineRowHeightScaled) * outlineRowHeightScaled;
     }
-    if (HAS_SPLIT_FONT) {
+    if (HAS_SPLIT_FONT && config["patch"].count("fontOutlineBFileName") == 1) {
       std::stringstream ss;
       ss << "languagebarrier\\"
          << config["patch"]["fontOutlineBFileName"].get<std::string>();
       slurpFile(ss.str(), fontBuffers + 1);
       gameLoadTexture(OUTLINE_TEXTURE_ID + 1, (void *)(fontBuffers[1]->c_str()),
                       fontBuffers[1]->size());
-
-      float outlineRowHeightScaled = OUTLINE_CELL_HEIGHT * COORDS_MULTIPLIER;
-      SPLIT_FONT_OUTLINE_A_HEIGHT =
-          floorf(4096 / outlineRowHeightScaled) * outlineRowHeightScaled;
     }
   }
   if (HAS_SPLIT_FONT && config["patch"].count("fontBFileName") == 1) {
@@ -670,7 +668,7 @@ void gameTextInit() {
   if (CC_BACKLOG_HIGHLIGHT || !retAddrToSpriteFixes.empty()) {
     scanCreateEnableHook("game", "drawSprite", (uintptr_t *)&gameExeDrawSprite,
                          (LPVOID)drawSpriteHook,
-	                 (LPVOID *)&gameExeDrawSpriteReal);
+                     (LPVOID *)&gameExeDrawSpriteReal);
   }
   if (CC_BACKLOG_HIGHLIGHT) {
     gameExeCcBacklogCurLine = (int *)sigScan("game", "useOfCcBacklogCurLine");

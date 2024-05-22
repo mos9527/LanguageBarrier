@@ -232,6 +232,11 @@ void LanguageBarrierInit() {
     }
 
     if (sigScan("game", "canary") != NULL) {
+        if (config["raw"].count("showConsole") && config["raw"]["showConsole"]) {
+            AllocConsole();
+            freopen("CONOUT$", "w", stdout);
+            freopen("CONOUT$", "w", stderr);
+        }
       // we're past DRM unpacking
       std::remove("languagebarrier\\log.txt");
       // TODO: proper versioning
@@ -272,6 +277,8 @@ void LanguageBarrierLog(const std::string &text) {
   std::time_t t = std::time(NULL);
   logFile << std::put_time(std::gmtime(&t), "[%D %r] ");
   logFile << text << std::endl;
+  std::cout << std::put_time(std::gmtime(&t), "[%D %r] ");
+  std::cout << text << std::endl;
 }
 bool scanCreateEnableHook(char *category, char *name, uintptr_t *ppTarget,
                           LPVOID pDetour, LPVOID *ppOriginal) {

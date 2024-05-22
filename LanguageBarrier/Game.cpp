@@ -364,7 +364,7 @@ int __fastcall mpkFopenByIdHook(void *pThis, void *EDX, mpkObject *mpk,
                                 int fileId, int unk3) {
   char *mpkFilename = (char *)&mpk->filename;
   std::stringstream logstr;
-  logstr << "mpkFopenById(" << mpkFilename << ", 0x" << std::hex << fileId
+  logstr << "mpkFopenById(" << mpkFilename << ", 0x" << std::hex << fileId << ", " << mpk->filename << fileId
          << ")" << std::dec;
 #ifdef _DEBUG
   LanguageBarrierLog(logstr.str());

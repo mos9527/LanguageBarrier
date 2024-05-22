@@ -97,6 +97,7 @@ void configLoadFiles() {
       json j;
       i2 >> j;
       rawConfig = json_merge(defaultconfig, j);
+      config["raw"] = rawConfig;
     } catch (...) {
       rawConfig = defaultconfig;
     }
